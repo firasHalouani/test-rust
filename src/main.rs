@@ -1,16 +1,40 @@
-use std::process::Command;
-use std::io;
+use std::fs::File;
+use std::io::Read;
 
 fn main() {
-    println!("Enter a command:");
+    // ❌ unwrap dangereux (peut crash)
+    let f = File::open("test.txt").unwrap();
 
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
+    // ❌ variable inutilement mutable
+    let mut x = 5;
 
-    // ⚠️ VULNERABLE: command injection
-    Command::new("sh")
-        .arg("-c")
-        .arg(input)
-        .output()
-        .expect("failed to execute process");
+    // ❌ clone inutile
+    let s1 = String::from("hello");
+    let s2 = s1.clone();
+
+    println!("{}", s2);
+
+    // ❌ conversion inutile
+    let y = 10 as i32;
+
+    // ❌ boucle inefficace
+    let v = vec![1, 2, 3];
+    for i in 0..v.len() {
+        println!("{}", v[i]);
+    }
+
+    // ❌ if inutile
+    if true == true {
+        println!("Always true");
+    }
+
+    // ❌ variable non utilisée
+    let unused_var = 42;
+
+    // ❌ lecture fichier sans gestion d’erreur
+    let mut content = String::new();
+    let mut file = File::open("data.txt").unwrap();
+    file.read_to_string(&mut content).unwrap();
+
+    println!("{}", content);
 }
